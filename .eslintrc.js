@@ -24,6 +24,7 @@ module.exports = {
     "plugin:prettier/recommended"
   ],
   rules: {
-    "prettier/prettier": ["error", {}, { usePrettierrc: true }]
+    "prettier/prettier": ["error", {}, { usePrettierrc: true }],
+    "no-unused-vars": "warn"
   }
 };
