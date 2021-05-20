@@ -9,3 +9,43 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+.employee-active {
+  color: blue;
+}
+
+.app {
+  display: flex;
+}
+
+.employees {
+  flex-basis: 75%;
+  margin-right: 50px;
+  border-right: 2px solid #000;
+}
+
+.employees-title {
+  text-align: center;
+}
+
+.employees-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.employee-wrapper + .employee-wrapper {
+  margin-left: 30px;
+  margin-bottom: 15px;
+}
+
+.employee-wrapper {
+  min-width: 100px;
+}
+
+.employee-content + .employee-content {
+  margin-top: 15px;
+}
+
+.btn-group {
+  display: flex;
+}
