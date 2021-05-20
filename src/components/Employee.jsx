@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-export const Employee = ({ employee, addEmployee, removeEmployee }) => {
+export const Employee = (prop) => {
+  const { employee, addEmployee, removeEmployee } = prop;
   const [active, setActive] = useState(getActivnessFromLocalStorage());
 
   function getActivnessFromLocalStorage() {
@@ -44,4 +46,10 @@ export const Employee = ({ employee, addEmployee, removeEmployee }) => {
       </div>
     </div>
   );
+};
+
+Employee.proptypes = {
+  employee: PropTypes.object.isRequired,
+  addEmployee: PropTypes.func.isRequired,
+  removeEmployee: PropTypes.func.isRequired
 };

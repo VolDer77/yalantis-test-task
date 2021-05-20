@@ -1,6 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-export const BirthdayList = ({ selectedEmployees }) => {
+export const BirthdayList = (prop) => {
+  const { selectedEmployees } = prop;
   return (
     <div className="emloyees-birhday">
       <h2 className="emloyees-birhday__title">Employees birthday</h2>
@@ -35,4 +37,8 @@ export const BirthdayList = ({ selectedEmployees }) => {
       </div>
     </div>
   );
+};
+
+BirthdayList.proptypes = {
+  selectedEmployees: PropTypes.object.isRequired
 };
