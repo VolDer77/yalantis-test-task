@@ -25,6 +25,7 @@ module.exports = {
   ],
   rules: {
     "prettier/prettier": ["error", {}, { usePrettierrc: true }],
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "react/prop-types": "off"
   }
 };
