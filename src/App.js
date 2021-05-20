@@ -7,7 +7,9 @@ import { getEmployees } from "./utils/api";
 
 function App() {
   const [employees, setEmployees] = useState({});
-  const [selectedEmployees, setSelectedEmployees] = useState({});
+  const [selectedEmployees, setSelectedEmployees] = useState(
+    JSON.parse(localStorage.getItem("selectedEmployees")) || {}
+  );
 
   useEffect(() => {
     getEmployees()
@@ -51,7 +53,7 @@ function App() {
     return result;
   }
 
-  function getEmployeesFromLocalStorage() {}
+  // function getEmployeesFromLocalStorage() {}
 
   function sortSelectedEmployees(arr, employee) {
     const newArr = [...arr, employee];
@@ -66,22 +68,33 @@ function App() {
     });
   }
 
+  function getItemsFromLocalStorage() {
+    return localStorage.getItem("selectedEmployees")
+      ? JSON.parse(localStorage.getItem("selectedEmployees"))
+      : {};
+  }
+
   function addSelectedEmployee(employee) {
     const employeeBirthday = new Date(employee.dob).toLocaleString("en-GB", { month: "long" });
-    setSelectedEmployees((employees) => {
-      if (employees[employeeBirthday]) {
-        return {
-          ...employees,
-          [employeeBirthday]: sortSelectedEmployees(employees[employeeBirthday], employee)
-        };
-      } else {
-        return {
-          ...employees,
+    const selectedEmployees = getItemsFromLocalStorage();
+    if (selectedEmployees[employeeBirthday]) {
+      localStorage.setItem(
+        "selectedEmployees",
+        JSON.stringify({
+          ...selectedEmployees,
+          [employeeBirthday]: sortSelectedEmployees(selectedEmployees[employeeBirthday], employee)
+        })
+      );
+    } else {
+      localStorage.setItem(
+        "selectedEmployees",
+        JSON.stringify({
+          ...selectedEmployees,
           [employeeBirthday]: [employee]
-        };
-      }
-    });
-    // localStorage.setItem(employee.id, employee);
+        })
+      );
+    }
+    setSelectedEmployees(getItemsFromLocalStorage());
   }
 
   function removeEmptyKeys(obj) {
@@ -96,14 +109,15 @@ function App() {
 
   function removeSelectedEmployee(employee) {
     const employeeBirthday = new Date(employee.dob).toLocaleString("en-GB", { month: "long" });
-    setSelectedEmployees((employees) => {
-      const updatedEmployees = {
-        ...employees,
-        [employeeBirthday]: employees[employeeBirthday].filter((item) => item.id !== employee.id)
-      };
-      return removeEmptyKeys(updatedEmployees);
-    });
-    // localStorage.removeItem(employee.id);
+    const selectedEmployees = getItemsFromLocalStorage();
+    const updatedEmployees = {
+      ...selectedEmployees,
+      [employeeBirthday]: selectedEmployees[employeeBirthday].filter(
+        (item) => item.id !== employee.id
+      )
+    };
+    localStorage.setItem("selectedEmployees", JSON.stringify(removeEmptyKeys(updatedEmployees)));
+    setSelectedEmployees(getItemsFromLocalStorage());
   }
 
   return (
