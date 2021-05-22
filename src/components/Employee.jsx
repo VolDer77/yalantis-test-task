@@ -1,47 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
-export const Employee = ({ employee, addEmployee, removeEmployee }) => {
-  const [active, setActive] = useState(getActivnessFromLocalStorage());
+import { getItemsFromLocalStorage } from "../features/utils";
 
-  function getActivnessFromLocalStorage() {
-    return JSON.parse(localStorage.getItem(employee.id)) ? true : false;
-  }
+export const Employee = (prop) => {
+  const { employee, addEmployee, removeEmployee } = prop;
+  const [active, setActive] = useState(getItemsFromLocalStorage(employee.id, false));
+
+  useEffect(() => {
+    if (active) {
+      localStorage.setItem(employee.id, true);
+    } else {
+      localStorage.removeItem(employee.id);
+    }
+  }, [active]);
 
   return (
     <div className="employee-content">
-      <div className={active ? "employee-active" : ""}>
+      <h4 className={`employee-name ${active ? "active" : ""}`}>
         {employee.lastName} {employee.firstName}
-      </div>
+      </h4>
       <div className="btn-group">
-        <div>
+        <div className="not-active-wrapper">
           <input
             type="radio"
             name={employee.firstName}
-            defaultChecked
-            value={!active}
+            id={`${employee.id}-not-active`}
+            value={false}
+            checked={!active}
             onChange={() => {
               setActive(false);
               removeEmployee(employee);
-              // localStorage.removeItem(employee.id);
             }}
           />
-          <label htmlFor="not active">not active</label>
+          <label htmlFor={`${employee.id}-not-active`}>not active</label>
         </div>
-        <div>
+        <div className="active-wrapper">
           <input
             type="radio"
             name={employee.firstName}
+            id={`${employee.id}-active`}
             value={true}
             checked={active}
             onChange={() => {
               setActive(true);
               addEmployee(employee);
-              // localStorage.setItem(employee.id, true);
             }}
           />
-          <label htmlFor="active">active</label>
+          <label htmlFor={`${employee.id}-active`}>active</label>
         </div>
       </div>
     </div>
   );
+};
+
+Employee.proptypes = {
+  employee: PropTypes.object.isRequired,
+  addEmployee: PropTypes.func.isRequired,
+  removeEmployee: PropTypes.func.isRequired
 };

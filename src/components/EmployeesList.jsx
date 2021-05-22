@@ -1,16 +1,18 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Employee } from "./Employee";
 
-export const EmployeesList = ({ employees, addSelectedEmployee, removeSelectedEmployee }) => {
+export const EmployeesList = (prop) => {
+  const { employees, addSelectedEmployee, removeSelectedEmployee } = prop;
   return (
-    <div className="employees">
+    <section className="employees">
       <h2 className="employees-title">Employees</h2>
       <div className="employees-wrapper">
         {Object.entries(employees).map((employee, idx) => {
           const [letter, items] = employee;
           return (
-            <section key={idx} className="employee-wrapper">
-              <div>{letter}</div>
+            <div key={idx} className="employee-wrapper">
+              <h3>{letter}</h3>
               {items.length > 0
                 ? items.map((item) => (
                     <Employee
@@ -21,10 +23,16 @@ export const EmployeesList = ({ employees, addSelectedEmployee, removeSelectedEm
                     />
                   ))
                 : "----"}
-            </section>
+            </div>
           );
         })}
       </div>
-    </div>
+    </section>
   );
+};
+
+EmployeesList.proptypes = {
+  employees: PropTypes.object.isRequired,
+  addSelectedEmployee: PropTypes.func.isRequired,
+  removeSelectedEmployee: PropTypes.func.isRequired
 };
