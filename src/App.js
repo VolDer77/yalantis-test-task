@@ -15,8 +15,10 @@ function App() {
   const [selectedEmployees, setSelectedEmployees] = useState(
     getItemsFromLocalStorage("selectedEmployees")
   );
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     getEmployees()
       .then(({ data }) => {
         const employeesArr = data.reduce((acc, item) => {
@@ -29,6 +31,7 @@ function App() {
           return acc;
         }, {});
         setEmployees(getSortedEmployees(employeesArr));
+        setLoading(false);
       })
       .catch((err) => {
         throw new Error(err);
@@ -76,7 +79,7 @@ function App() {
       );
     }
     setSelectedEmployees(getItemsFromLocalStorage("selectedEmployees"));
-  } // TODO добавити сортування за місяцями
+  }
 
   function removeSelectedEmployee(employee) {
     const month = new Date(employee.dob).getMonth();
@@ -91,12 +94,18 @@ function App() {
 
   return (
     <div className="app">
-      <EmployeesList
-        employees={employees}
-        addSelectedEmployee={addSelectedEmployee}
-        removeSelectedEmployee={removeSelectedEmployee}
-      />
-      <BirthdayList selectedEmployees={selectedEmployees} />
+      {loading ? (
+        <h3>Loading...</h3>
+      ) : (
+        <>
+          <EmployeesList
+            employees={employees}
+            addSelectedEmployee={addSelectedEmployee}
+            removeSelectedEmployee={removeSelectedEmployee}
+          />
+          <BirthdayList selectedEmployees={selectedEmployees} />
+        </>
+      )}
     </div>
   );
 }
