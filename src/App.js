@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import { BirthdayList } from "./components/BirthdayList";
 import { EmployeesList } from "./components/EmployeesList";
 
-import { alphabet } from "./utils/alphabet";
-import { getEmployees } from "./utils/api";
+import {
+  alphabet,
+  sortByLastName,
+  getItemsFromLocalStorage,
+  removeEmptyKeys
+} from "./features/utils";
+import { getEmployees } from "./features/api";
 
 function App() {
   const [employees, setEmployees] = useState({});
   const [selectedEmployees, setSelectedEmployees] = useState(
-    JSON.parse(localStorage.getItem("selectedEmployees")) || {}
+    getItemsFromLocalStorage("selectedEmployees")
   );
 
   useEffect(() => {
@@ -23,25 +28,17 @@ function App() {
           }
           return acc;
         }, {});
-        setEmployees(sortByLastName(employeesArr));
+        setEmployees(getSortedEmployees(employeesArr));
       })
       .catch((err) => {
         throw new Error(err);
       });
   }, []);
 
-  function sortByLastName(employees) {
+  function getSortedEmployees(employees) {
     const orderedValues = Object.entries(employees).reduce((acc, item) => {
       const values = item[1];
-      values.sort((a, b) => {
-        if (a.lastName > b.lastName) {
-          return 1;
-        }
-        if (a.lastName < b.lastName) {
-          return -1;
-        }
-        return 0;
-      });
+      values.sort(sortByLastName);
       return acc;
     }, employees);
 
@@ -53,30 +50,15 @@ function App() {
     return result;
   }
 
-  // function getEmployeesFromLocalStorage() {}
-
   function sortSelectedEmployees(arr, employee) {
     const newArr = [...arr, employee];
-    return newArr.sort((a, b) => {
-      if (a.lastName > b.lastName) {
-        return 1;
-      }
-      if (a.lastName < b.lastName) {
-        return -1;
-      }
-      return 0;
-    });
-  }
-
-  function getItemsFromLocalStorage() {
-    return localStorage.getItem("selectedEmployees")
-      ? JSON.parse(localStorage.getItem("selectedEmployees"))
-      : {};
+    return newArr.sort(sortByLastName);
   }
 
   function addSelectedEmployee(employee) {
+    console.log(employee, "get");
     const employeeBirthday = new Date(employee.dob).toLocaleString("en-GB", { month: "long" });
-    const selectedEmployees = getItemsFromLocalStorage();
+    const selectedEmployees = getItemsFromLocalStorage("selectedEmployees");
     if (selectedEmployees[employeeBirthday]) {
       localStorage.setItem(
         "selectedEmployees",
@@ -94,22 +76,13 @@ function App() {
         })
       );
     }
-    setSelectedEmployees(getItemsFromLocalStorage());
-  }
-
-  function removeEmptyKeys(obj) {
-    const newObj = {};
-    Object.keys(obj).forEach((key) => {
-      if (obj[key].length) {
-        newObj[key] = obj[key];
-      }
-    });
-    return newObj;
-  }
+    setSelectedEmployees(getItemsFromLocalStorage("selectedEmployees"));
+  } // TODO добавити сортування за місяцями
 
   function removeSelectedEmployee(employee) {
+    console.log(employee);
     const employeeBirthday = new Date(employee.dob).toLocaleString("en-GB", { month: "long" });
-    const selectedEmployees = getItemsFromLocalStorage();
+    const selectedEmployees = getItemsFromLocalStorage("selectedEmployees");
     const updatedEmployees = {
       ...selectedEmployees,
       [employeeBirthday]: selectedEmployees[employeeBirthday].filter(
@@ -117,7 +90,7 @@ function App() {
       )
     };
     localStorage.setItem("selectedEmployees", JSON.stringify(removeEmptyKeys(updatedEmployees)));
-    setSelectedEmployees(getItemsFromLocalStorage());
+    setSelectedEmployees(getItemsFromLocalStorage("selectedEmployees"));
   }
 
   return (

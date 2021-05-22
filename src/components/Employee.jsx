@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
+import { getItemsFromLocalStorage } from "../features/utils";
+
 export const Employee = (prop) => {
   const { employee, addEmployee, removeEmployee } = prop;
-  const [active, setActive] = useState(localStorage.getItem(employee.id) ? true : false);
+  const [active, setActive] = useState(getItemsFromLocalStorage(employee.id, false));
 
   useEffect(() => {
     if (active) {
@@ -23,12 +25,11 @@ export const Employee = (prop) => {
           <input
             type="radio"
             name={employee.firstName}
-            // defaultChecked
             value={false}
             checked={!active}
             onChange={() => {
               setActive(false);
-              removeEmployee(employee); // ломається (якось добавляти юзерів в локал сторедж і забирати в App)
+              removeEmployee(employee);
             }}
           />
           <label htmlFor="not active">not active</label>
