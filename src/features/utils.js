@@ -68,7 +68,6 @@ export const removeEmptyKeys = (obj) => {
 
 export const sortByMonth = (obj) => {
   const currentMonth = new Date().getMonth();
-  if (currentMonth === 0) return obj;
   const employeesBirthdayMonthes = Object.keys(obj).sort((a, b) => a - b);
   const previousMonthes = employeesBirthdayMonthes.filter((item) => +item < +currentMonth);
   console.log(previousMonthes);
