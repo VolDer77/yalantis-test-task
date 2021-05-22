@@ -27,6 +27,21 @@ export const alphabet = [
   "z"
 ].map((item) => item.toUpperCase());
 
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+
 export const sortByLastName = (a, b) => {
   if (a.lastName > b.lastName) {
     return 1;
@@ -35,10 +50,6 @@ export const sortByLastName = (a, b) => {
     return -1;
   }
   return 0;
-};
-
-export const getEmployeeBirthdayMonth = (birthday) => {
-  return new Date(birthday).toLocaleString("en-GB", { month: "long" });
 };
 
 export const getItemsFromLocalStorage = (key, defaultValue = {}) => {
@@ -53,4 +64,23 @@ export const removeEmptyKeys = (obj) => {
     }
   });
   return newObj;
+};
+
+export const sortByMonth = (obj) => {
+  const currentMonth = new Date().getMonth();
+  if (currentMonth === 0) return obj;
+  const employeesBirthdayMonthes = Object.keys(obj).sort((a, b) => a - b);
+  const previousMonthes = employeesBirthdayMonthes.filter((item) => +item < +currentMonth);
+  console.log(previousMonthes);
+  const postMonthes = employeesBirthdayMonthes.filter((item) => +item >= +currentMonth);
+  console.log(postMonthes);
+  console.log([...postMonthes, ...previousMonthes]);
+
+  const result = [...postMonthes, ...previousMonthes].reduce((acc, item) => {
+    const month = monthNames[item];
+    acc[month] = obj[item] || [];
+
+    return acc;
+  }, {});
+  return result;
 };

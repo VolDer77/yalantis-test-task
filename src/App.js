@@ -6,8 +6,7 @@ import {
   alphabet,
   sortByLastName,
   getItemsFromLocalStorage,
-  removeEmptyKeys,
-  getEmployeeBirthdayMonth
+  removeEmptyKeys
 } from "./features/utils";
 import { getEmployees } from "./features/api";
 
@@ -57,14 +56,14 @@ function App() {
   }
 
   function addSelectedEmployee(employee) {
-    const employeeBirthday = getEmployeeBirthdayMonth(employee.dob);
+    const month = new Date(employee.dob).getMonth();
     const selectedEmployees = getItemsFromLocalStorage("selectedEmployees");
-    if (selectedEmployees[employeeBirthday]) {
+    if (selectedEmployees[month]) {
       localStorage.setItem(
         "selectedEmployees",
         JSON.stringify({
           ...selectedEmployees,
-          [employeeBirthday]: sortSelectedEmployees(selectedEmployees[employeeBirthday], employee)
+          [month]: sortSelectedEmployees(selectedEmployees[month], employee)
         })
       );
     } else {
@@ -72,7 +71,7 @@ function App() {
         "selectedEmployees",
         JSON.stringify({
           ...selectedEmployees,
-          [employeeBirthday]: [employee]
+          [month]: [employee]
         })
       );
     }
@@ -80,13 +79,11 @@ function App() {
   } // TODO добавити сортування за місяцями
 
   function removeSelectedEmployee(employee) {
-    const employeeBirthday = getEmployeeBirthdayMonth(employee.dob);
+    const month = new Date(employee.dob).getMonth();
     const selectedEmployees = getItemsFromLocalStorage("selectedEmployees");
     const updatedEmployees = {
       ...selectedEmployees,
-      [employeeBirthday]: selectedEmployees[employeeBirthday].filter(
-        (item) => item.id !== employee.id
-      )
+      [month]: selectedEmployees[month].filter((item) => item.id !== employee.id)
     };
     localStorage.setItem("selectedEmployees", JSON.stringify(removeEmptyKeys(updatedEmployees)));
     setSelectedEmployees(getItemsFromLocalStorage("selectedEmployees"));

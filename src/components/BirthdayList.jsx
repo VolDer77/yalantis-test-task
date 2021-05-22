@@ -1,18 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { sortByMonth } from "../features/utils";
+
 export const BirthdayList = (prop) => {
   const { selectedEmployees } = prop;
+  const sortedSelectedEmployees = sortByMonth(selectedEmployees);
   return (
-    <div className="emloyees-birhday">
+    <section className="emloyees-birhday">
       <h2 className="emloyees-birhday__title">Employees birthday</h2>
       <div className="employees-birthday__wrapper">
-        {Object.keys(selectedEmployees).length > 0 ? (
-          Object.entries(selectedEmployees).map((employee, idx) => {
+        {Object.keys(sortedSelectedEmployees).length > 0 ? (
+          Object.entries(sortedSelectedEmployees).map((employee, idx) => {
             const [month, items] = employee;
             return (
               <section key={idx}>
-                {selectedEmployees[month].length > 0 && <h4>{month}</h4>}
+                {sortedSelectedEmployees[month].length > 0 && <h4>{month}</h4>}
                 <ul>
                   {items &&
                     items.map((item) => {
@@ -35,7 +38,7 @@ export const BirthdayList = (prop) => {
           <h3>Employees List is empty</h3>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
