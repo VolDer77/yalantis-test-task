@@ -6,7 +6,8 @@ import {
   alphabet,
   sortByLastName,
   getItemsFromLocalStorage,
-  removeEmptyKeys
+  removeEmptyKeys,
+  getEmployeeBirthdayMonth
 } from "./features/utils";
 import { getEmployees } from "./features/api";
 
@@ -56,8 +57,7 @@ function App() {
   }
 
   function addSelectedEmployee(employee) {
-    console.log(employee, "get");
-    const employeeBirthday = new Date(employee.dob).toLocaleString("en-GB", { month: "long" });
+    const employeeBirthday = getEmployeeBirthdayMonth(employee.dob);
     const selectedEmployees = getItemsFromLocalStorage("selectedEmployees");
     if (selectedEmployees[employeeBirthday]) {
       localStorage.setItem(
@@ -80,8 +80,7 @@ function App() {
   } // TODO добавити сортування за місяцями
 
   function removeSelectedEmployee(employee) {
-    console.log(employee);
-    const employeeBirthday = new Date(employee.dob).toLocaleString("en-GB", { month: "long" });
+    const employeeBirthday = getEmployeeBirthdayMonth(employee.dob);
     const selectedEmployees = getItemsFromLocalStorage("selectedEmployees");
     const updatedEmployees = {
       ...selectedEmployees,

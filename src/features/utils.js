@@ -37,6 +37,10 @@ export const sortByLastName = (a, b) => {
   return 0;
 };
 
+export const getEmployeeBirthdayMonth = (birthday) => {
+  return new Date(birthday).toLocaleString("en-GB", { month: "long" });
+};
+
 export const getItemsFromLocalStorage = (key, defaultValue = {}) => {
   return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : defaultValue;
 };
