@@ -17,14 +17,15 @@ export const Employee = (prop) => {
 
   return (
     <div className="employee-content">
-      <div className={active ? "employee-active" : ""}>
+      <h4 className={`employee-name ${active ? "active" : ""}`}>
         {employee.lastName} {employee.firstName}
-      </div>
+      </h4>
       <div className="btn-group">
-        <div>
+        <div className="not-active-wrapper">
           <input
             type="radio"
             name={employee.firstName}
+            id={`${employee.id}-not-active`}
             value={false}
             checked={!active}
             onChange={() => {
@@ -32,12 +33,13 @@ export const Employee = (prop) => {
               removeEmployee(employee);
             }}
           />
-          <label htmlFor="not active">not active</label>
+          <label htmlFor={`${employee.id}-not-active`}>not active</label>
         </div>
-        <div>
+        <div className="active-wrapper">
           <input
             type="radio"
             name={employee.firstName}
+            id={`${employee.id}-active`}
             value={true}
             checked={active}
             onChange={() => {
@@ -45,7 +47,7 @@ export const Employee = (prop) => {
               addEmployee(employee);
             }}
           />
-          <label htmlFor="active">active</label>
+          <label htmlFor={`${employee.id}-active`}>active</label>
         </div>
       </div>
     </div>
