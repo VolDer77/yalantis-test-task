@@ -22,6 +22,11 @@ label {
   cursor: pointer;
 }
 
+ul {
+  list-style: none;
+  padding: 0;
+}
+
 .active {
   color: blue;
 }
@@ -46,7 +51,6 @@ label {
 }
 
 .employee-wrapper + .employee-wrapper {
-  /* margin-left: 30px; */
   margin-bottom: 15px;
 }
 
@@ -78,4 +82,12 @@ label {
 
 .not-active-wrapper {
   margin-right: 7px;
+}
+
+.emloyees-birhday {
+  padding: 0 10px;
+}
+
+.employees-birthday__list-item + .employees-birthday__list-item {
+  margin-top: 5px;
 }
