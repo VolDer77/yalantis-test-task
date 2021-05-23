@@ -16,9 +16,11 @@ function App() {
     getItemsFromLocalStorage("selectedEmployees")
   );
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
+    setError(false);
     getEmployees()
       .then(({ data }) => {
         const employeesArr = data.reduce((acc, item) => {
@@ -33,8 +35,8 @@ function App() {
         setEmployees(getSortedEmployees(employeesArr));
         setLoading(false);
       })
-      .catch((err) => {
-        throw new Error(err);
+      .catch(() => {
+        setError(true);
       });
   }, []);
 
@@ -90,6 +92,10 @@ function App() {
     };
     localStorage.setItem("selectedEmployees", JSON.stringify(removeEmptyKeys(updatedEmployees)));
     setSelectedEmployees(getItemsFromLocalStorage("selectedEmployees"));
+  }
+
+  if (error) {
+    return <h1>Failed to fetch data</h1>;
   }
 
   return (
