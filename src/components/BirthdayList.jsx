@@ -5,8 +5,7 @@ import { EmployeeBirthday } from "./EmployeeBirthday";
 
 import { sortByMonth } from "../features/utils";
 
-export const BirthdayList = (prop) => {
-  const { selectedEmployees } = prop;
+export const BirthdayList = ({ selectedEmployees }) => {
   const sortedSelectedEmployees = sortByMonth(selectedEmployees);
   return (
     <section className="emloyees-birhday">
@@ -35,6 +34,6 @@ export const BirthdayList = (prop) => {
   );
 };
 
-BirthdayList.proptypes = {
+BirthdayList.propTypes = {
   selectedEmployees: PropTypes.object.isRequired
 };

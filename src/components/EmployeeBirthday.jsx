@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export const EmployeeBirthday = (prop) => {
-  const { employee } = prop;
+export const EmployeeBirthday = ({ employee }) => {
   const birthday = new Date(employee.dob);
   const birthdayString = `${birthday.getDate()} ${birthday.toLocaleString("en-GB", {
     month: "long"
@@ -15,6 +14,6 @@ export const EmployeeBirthday = (prop) => {
   );
 };
 
-EmployeeBirthday.proptypes = {
+EmployeeBirthday.propTypes = {
   employee: PropTypes.object.isRequired
 };

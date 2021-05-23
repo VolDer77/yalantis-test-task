@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 
 import { getItemsFromLocalStorage } from "../features/utils";
 
-export const Employee = (prop) => {
-  const { employee, addEmployee, removeEmployee } = prop;
+export const Employee = ({ employee, addEmployee, removeEmployee }) => {
   const [active, setActive] = useState(getItemsFromLocalStorage(employee.id, false));
 
   useEffect(() => {
@@ -13,7 +12,7 @@ export const Employee = (prop) => {
     } else {
       localStorage.removeItem(employee.id);
     }
-  }, [active]);
+  }, [active, employee.id]);
 
   return (
     <div className="employee-content">
@@ -54,7 +53,7 @@ export const Employee = (prop) => {
   );
 };
 
-Employee.proptypes = {
+Employee.propTypes = {
   employee: PropTypes.object.isRequired,
   addEmployee: PropTypes.func.isRequired,
   removeEmployee: PropTypes.func.isRequired

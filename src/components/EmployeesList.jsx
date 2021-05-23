@@ -2,8 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Employee } from "./Employee";
 
-export const EmployeesList = (prop) => {
-  const { employees, addSelectedEmployee, removeSelectedEmployee } = prop;
+export const EmployeesList = ({ employees, addSelectedEmployee, removeSelectedEmployee }) => {
   return (
     <section className="employees">
       <h2 className="employees-title">Employees</h2>
@@ -31,7 +30,7 @@ export const EmployeesList = (prop) => {
   );
 };
 
-EmployeesList.proptypes = {
+EmployeesList.propTypes = {
   employees: PropTypes.object.isRequired,
   addSelectedEmployee: PropTypes.func.isRequired,
   removeSelectedEmployee: PropTypes.func.isRequired
