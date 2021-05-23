@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export const EmployeeBirthday = (prop) => {
   const { employee } = prop;
@@ -12,4 +13,8 @@ export const EmployeeBirthday = (prop) => {
       {employee.lastName} {employee.firstName} - {birthdayString}
     </li>
   );
+};
+
+EmployeeBirthday.proptypes = {
+  employee: PropTypes.object.isRequired
 };
